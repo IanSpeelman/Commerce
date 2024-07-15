@@ -9,4 +9,6 @@ urlpatterns = [
     path("logout", views.logout_view, name="logout"),
     path("register", views.register, name="register"),
     path("listings/<int:listing_id>", views.listing, name="listing"),
+    path("listings/<int:listing_id>/close", views.close_listing, name="close_listing"),
+    path("listings/<int:listing_id>/bid", views.bid, name="bid"),
 ]

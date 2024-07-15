@@ -8,6 +8,7 @@ models
         description
         starting bid
         user_id
+        winner_id (default False)
         (optional) image url
         (optional) category
 
@@ -25,6 +26,12 @@ models
         user_id
         comment
         date/time
+    
+    name: watchlist
+    fields:
+        (pk auto increment) id
+        listing_id
+        user_id
 
 create listings
 listing needs:
@@ -63,3 +70,6 @@ add/edit/remove/view
 listings
 comments
 bids
+
+
+

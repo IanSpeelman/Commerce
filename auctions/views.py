@@ -5,10 +5,9 @@ from django.shortcuts import render
 from django.urls import reverse
 from .models import User, Listing
 
-#* request.user.id  THIS IS HOW TO GET THE LOGGED IN USER ID
 
 def index(request):
-    listings = Listing.objects.all()
+    listings = Listing.objects.filter(winner_id=False)
     return render(request, "auctions/index.html", {
         "listings":listings,
     })
@@ -70,3 +69,11 @@ def listing(request, listing_id):
     return render(request, "auctions/listing.html", {
         "listing": listing,
     })
+
+def close_listing(request, listing_id):
+    #TODO get highest bidder and set as winner_id for listing
+    return HttpResponseRedirect(reverse("auctions:index"))
+
+def bid(request,listing_id):
+    #TODO retrieve bid and listing id, and add to a bidding model
+    return HttpResponseRedirect(reverse("auctions:index"))

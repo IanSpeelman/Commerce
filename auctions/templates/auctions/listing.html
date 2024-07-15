@@ -1,23 +1,30 @@
 {% extends "auctions/layout.html" %} {% block body %}
+{% load static %}
 <div class="listing">
 	<div class="header left">
+		{% if listing.image_url != "False" %}
 		<img src="{{ listing.image_url }}" alt=" {{ listing.title }}" />
+		{% else %}
+		<img src="{% static 'auctions\images\placeholder.webp' %}" alt="no image" />
+		{% endif %}
 	</div>
 	<div class="content right">
 		<h1>{{ listing.title }}</h1>
 		<p>{{ listing.description }}</p>
 	</div>
 	<div class="bidding left">
+		{% if user.id and user.id != listing.user_id.id%}
+		<form action="{% url 'auctions:bid' listing.id %}"><label for="bid"></label><input type="number" name="bid" id="bid" value="{{listing.starting_bid}}"><button>bid!</button></form>
+		{% else %}
 		<p><span>highest bid: </span>${{ listing.starting_bid }}</p>
+		{% endif %}
 		<p><span>category: </span>{{ listing.category }}</p>
+		{% if user.id == listing.user_id.id %}
+		<form action="{% url 'auctions:close_listing' listing.id%}"><button>close auction</button></form>
+		{% endif %}
+
 	</div>
 	<div class="comments right">
-		<p><span>name:</span> comments should go here</p>
-		<p><span>name:</span> comments should go here</p>
-		<p><span>name:</span> comments should go here</p>
-		<p><span>name:</span> comments should go here</p>
-		<p><span>name:</span> comments should go here</p>
-		<p><span>name:</span> comments should go here</p>
 		<p><span>name:</span> comments should go here</p>
 	</div>
 </div>
