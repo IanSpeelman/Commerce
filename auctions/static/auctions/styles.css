@@ -1,3 +1,62 @@
 body {
-    padding: 10px;
+  padding: 10px;
 }
+
+.listing {
+  width: 90vw;
+  margin: 0 auto;
+  padding: 1em;
+  display: grid;
+  grid-template-columns: 30% 70%;
+  background-color: rgba(0, 0, 0, 0.1882352941);
+}
+.listing .bidding {
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
+.listing * {
+  padding: 0.5em;
+}
+.listing .header img {
+  width: 100%;
+}
+
+span {
+  font-weight: bold;
+}
+
+.listings {
+  width: 90vw;
+  margin: 0 auto;
+}
+.listings ul {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 1em;
+}
+.listings ul div.item {
+  width: 400px;
+  border: 1px solid rgb(95, 95, 95);
+  padding: 1em;
+}
+.listings ul div.item h3 {
+  text-align: center;
+  font-size: 1.4em;
+  font-weight: bold;
+}
+.listings ul div.item img {
+  width: 100%;
+  margin: 0 auto;
+  aspect-ratio: 1.5/1;
+  object-fit: cover;
+}
+.listings ul div.item .info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+/*# sourceMappingURL=styles.css.map */

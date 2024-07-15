@@ -1,0 +1,25 @@
+{% extends "auctions/layout.html" %} {% block body %}
+<div class="listing">
+	<div class="header left">
+		<img src="{{ listing.image_url }}" alt=" {{ listing.title }}" />
+	</div>
+	<div class="content right">
+		<h1>{{ listing.title }}</h1>
+		<p>{{ listing.description }}</p>
+	</div>
+	<div class="bidding left">
+		<p><span>highest bid: </span>${{ listing.starting_bid }}</p>
+		<p><span>category: </span>{{ listing.category }}</p>
+	</div>
+	<div class="comments right">
+		<p><span>name:</span> comments should go here</p>
+		<p><span>name:</span> comments should go here</p>
+		<p><span>name:</span> comments should go here</p>
+		<p><span>name:</span> comments should go here</p>
+		<p><span>name:</span> comments should go here</p>
+		<p><span>name:</span> comments should go here</p>
+		<p><span>name:</span> comments should go here</p>
+	</div>
+</div>
+
+{% endblock %}

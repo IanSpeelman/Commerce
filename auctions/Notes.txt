@@ -1,0 +1,65 @@
+models  
+ auction listings, bids and comments
+
+    name:listing
+    fields:
+        (pk auto increment) id
+        title
+        description
+        starting bid
+        user_id
+        (optional) image url
+        (optional) category
+
+    name: bids
+    fields:
+        (pk auto increment) id
+        listing_id
+        user_id
+        bid
+
+    name: comments
+    fields:
+        (pk auto increment) id
+        listing_id
+        user_id
+        comment
+        date/time
+
+create listings
+listing needs:
+title
+description
+starting bid
+optional image
+optional category
+
+active listings
+list all active listings,
+each listing should display at least
+titledescription
+current price
+photo( if this is provided when creating a listing, this is optional)
+
+listing page
+should display a single listing that displays all information known about it including current price
+if the user is logged in:
+toggle watchlist, (if listing is not in watchlist the user should be able to add, and if it is, user should be able to remove)
+user can bet (bid must be higher than highest bet, or starting bet if no bets are made yet)
+if logged in user is the owner of the listing, they should be able to close the listing
+if logged in user is the winner of the listing, this should be displayed on the page
+users should be able to comment on the listing
+
+watchlist
+displays all items that are in a watchlist for the current user
+user should be able to navigate towards any listing in the watchlist by clicking on it
+
+categories
+this page should list all categories that exist in this app
+clicking one of the categories should take you to the active listings page wich only shows active listings in this category
+
+admin interface
+add/edit/remove/view
+listings
+comments
+bids

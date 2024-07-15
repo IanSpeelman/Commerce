@@ -1,0 +1,64 @@
+body {
+	padding: 10px;
+}
+.listing {
+	width: 90vw;
+	margin: 0 auto;
+	padding: 1em;
+	display: grid;
+	grid-template-columns: 30% 70%;
+	background-color: #00000030;
+
+	.bidding {
+		display: grid;
+		grid-template-columns: 50% 50%;
+	}
+
+	* {
+		padding: 0.5em;
+	}
+
+	.header {
+		img {
+			width: 100%;
+		}
+	}
+}
+span {
+	font-weight: bold;
+}
+.listings {
+	width: 90vw;
+	margin: 0 auto;
+	ul {
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: space-around;
+		gap: 1em;
+
+		div.item {
+			width: 400px;
+			border: 1px solid rgb(95, 95, 95);
+			padding: 1em;
+			h3 {
+				text-align: center;
+				font-size: 1.4em;
+				font-weight: bold;
+			}
+
+			img {
+				width: 100%;
+				margin: 0 auto;
+				aspect-ratio: 1.5/1;
+				object-fit: cover;
+			}
+			.info {
+				display: flex;
+				flex-direction: row;
+				justify-content: space-around;
+			}
+		}
+	}
+}
