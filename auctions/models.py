@@ -13,6 +13,7 @@ class Listing(models.Model):
     winner_id = models.IntegerField(blank=True, default=False)
     image_url = models.CharField(max_length=100, blank=True)
     category = models.CharField(max_length=30,blank=True)
+    current_bid = models.IntegerField(default=False)
 
 
 

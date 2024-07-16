@@ -64,7 +64,7 @@ span {
 }
 .message {
 	width: 90vw;
-    margin: 0 auto;
+	margin: 0 auto;
 	text-align: center;
 	p {
 		padding: 1em;
@@ -75,4 +75,7 @@ span {
 }
 .success {
 	background-color: rgba(0, 255, 0, 0.3);
+}
+.anounce {
+	background-color: rgba(0, 94, 255, 0.3);
 }

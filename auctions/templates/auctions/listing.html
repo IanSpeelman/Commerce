@@ -24,11 +24,16 @@
 			<button>bid!</button>{% csrf_token %}
 		</form>
 		{% else %}
+		{% if highest_bid != False %}
+		<p><span>highest bid: </span>${{ highest_bid }}</p>
+		{% else %}
 		<p><span>highest bid: </span>${{ listing.starting_bid }}</p>
+		{% endif %}
 		{% endif %}
 		<p><span>category: </span>{{ listing.category }}</p>
 		{% if user.id == listing.user_id.id %}
-		<form action="{% url 'auctions:close_listing' listing.id%}"><button>close auction</button></form>
+		<form action="{% url 'auctions:close_listing' listing.id%}" method="post">{% csrf_token %}<button>close
+				auction</button></form>
 		{% endif %}
 
 	</div>

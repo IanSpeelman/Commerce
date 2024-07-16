@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
+from django.db.models import OuterRef, Subquery
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
@@ -10,6 +11,9 @@ def index(request):
     listings = Listing.objects.filter(winner_id=False)
     return render(request, "auctions/index.html", {
         "listings":listings,
+        "type": request.GET.get("type", False),
+        "message": request.GET.get("message", False),
+
     })
 
 
@@ -81,8 +85,26 @@ def listing(request, listing_id):
 
 
 def close_listing(request, listing_id):
-    # TODO get highest bidder and set as winner_id for listing
-    return HttpResponseRedirect(reverse("auctions:index"))
+    if request.method == "POST":
+        bids = Bid.objects.filter(listing=listing_id)
+        listing = Listing.objects.get(id=listing_id)
+        highest_bid = False
+        try:
+            for bid in bids:
+                if not highest_bid:
+                    highest_bid = bid
+                elif bid.bid > highest_bid.bid:
+                    highest_bid = bid
+            listing.winner_id = highest_bid.user.id
+            listing.save()
+            return HttpResponseRedirect(f"{reverse("auctions:listing", kwargs={"listing_id":listing_id})}?type=success&message=Closing listing success.")
+        except:
+            listing.winner_id = request.user.id
+            listing.save()
+            return HttpResponseRedirect(f"{reverse("auctions:listing", kwargs={"listing_id":listing_id})}?type=anounce&message=Listing is closed without winner.")
+
+        # TODO get highest bidder and set as winner_id for listing
+    return HttpResponseRedirect(f"{reverse("auctions:listing", kwargs={"listing_id":listing_id})}?type=fail&message=How did you get here.")
 
 
 def bid(request,listing_id):
@@ -99,8 +121,18 @@ def bid(request,listing_id):
             highest_bet = bidvalue
             newbid = Bid(user=request.user, listing=listing, bid=highest_bet)
             newbid.save()
+            listing.current_bid = bidvalue
+            listing.save()
             return HttpResponseRedirect(f"{reverse("auctions:listing", kwargs={"listing_id":listing_id})}?type=success&message=Bid placed successfully")
         else:
             return HttpResponseRedirect(f"{reverse("auctions:listing", kwargs={"listing_id":listing_id})}?type=fail&message=Bid is to low")
 
         
+def reset(request):
+    listings = Listing.objects.all()
+
+    for listing in listings:
+        listing.winner_id = 0
+        listing.save()
+            
+    return HttpResponseRedirect(f"{reverse("auctions:index")}?type=anounce&message=closed listings are open again")
