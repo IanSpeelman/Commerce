@@ -23,7 +23,10 @@
 		</li>
 		{% if user.is_authenticated %}
 		<li class="nav-item">
-			<a class="nav-link" href="{% url 'auctions:watchlist' %}">watchlist</a>
+			<a class="nav-link" href="{% url 'auctions:watchlist' %}">Watchlist</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="{% url 'auctions:winnings' %}">Winnings</a>
 		</li>
 		<li class="nav-item">
 			<a class="nav-link" href="{% url 'auctions:logout' %}">Log Out</a>

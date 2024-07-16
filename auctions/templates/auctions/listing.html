@@ -10,8 +10,10 @@
 	</div>
 	<div class="content right">
 		<div class="buttons">
+			{% if user.is_authenticated %}
 			{% if watchlist %}
-			<form action="{% url 'auctions:watchlist_add' listing.id%}" method="post">{% csrf_token %}<button>remove from
+			<form action="{% url 'auctions:watchlist_add' listing.id%}" method="post">{% csrf_token %}<button>remove
+					from
 					watchlist</button></form>
 			{% else %}
 			<form action="{% url 'auctions:watchlist_add' listing.id%}" method="post">{% csrf_token %}<button>add to
@@ -21,12 +23,17 @@
 			<form action="{% url 'auctions:close_listing' listing.id%}" method="post">{% csrf_token %}<button>close
 					auction</button></form>
 			{% endif %}
+			{% endif %}
 		</div>
 		<h1>{{ listing.title }}</h1>
 		<p>{{ listing.description }}</p>
 	</div>
 	<div class="bidding left">
-		{% if user.id and user.id != listing.user_id.id%}
+		{% if user.id and user.id != listing.user_id.id %}
+		{% if listing.winner_id %}
+		<p><span>winner: </span>{{ listing.winner_id }}</p>
+		{% else %}
+		{% if user.is_authenticated %}
 		<form action="{% url 'auctions:bid' listing.id %}" method="post"><label for="bid"></label>
 			{% if highest_bid != False %}
 			<input type="number" name="bid" id="bid" min="{{ highest_bid }}" value="{{ highest_bid }}">
@@ -35,12 +42,18 @@
 				value="{{ listing.starting_bid }}">
 			{% endif %}
 			<button>bid!</button>{% csrf_token %}
+			{% endif %}
 		</form>
+		{% endif %}
+		{% else %}
+		{% if listing.winner_id %}
+		<p><span>winner: </span>{{ listing.winner_id }}</p>
 		{% else %}
 		{% if highest_bid != False %}
 		<p><span>highest bid: </span>${{ highest_bid }}</p>
 		{% else %}
 		<p><span>highest bid: </span>${{ listing.starting_bid }}</p>
+		{% endif %}
 		{% endif %}
 		{% endif %}
 		<p><span>category: </span>{{ listing.category }}</p>

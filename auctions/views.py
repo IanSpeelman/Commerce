@@ -1,6 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.db.models import OuterRef, Subquery
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
@@ -8,12 +7,11 @@ from .models import User, Listing, Bid, Watchlist
 
 
 def index(request):
-    listings = Listing.objects.filter(winner_id=False)
+    listings = Listing.objects.filter(winner_id=None)
     return render(request, "auctions/index.html", {
         "listings":listings,
         "type": request.GET.get("type", False),
         "message": request.GET.get("message", False),
-
     })
 
 
@@ -70,9 +68,14 @@ def register(request):
 
 def listing(request, listing_id):
     listing = Listing.objects.get(id=listing_id)
+
     bids = Bid.objects.filter(listing=listing_id)
-    user = request.user
-    watchlist = Watchlist.objects.filter(user=user, listing=listing)
+    watchlist = {}
+    if request.user == "AnonymousUser":
+        print(request.user)
+        user = request.user
+        watchlist = Watchlist.objects.filter(user=user, listing=listing)
+    
 
     highest_bid = False
     for bid in bids:
@@ -99,11 +102,11 @@ def close_listing(request, listing_id):
                     highest_bid = bid
                 elif bid.bid > highest_bid.bid:
                     highest_bid = bid
-            listing.winner_id = highest_bid.user.id
+            listing.winner_id = highest_bid.user
             listing.save()
             return HttpResponseRedirect(f"{reverse("auctions:listing", kwargs={"listing_id":listing_id})}?type=success&message=Closing listing success.")
         except:
-            listing.winner_id = request.user.id
+            listing.winner_id = None
             listing.save()
             return HttpResponseRedirect(f"{reverse("auctions:listing", kwargs={"listing_id":listing_id})}?type=anounce&message=Listing is closed without winner.")
 
@@ -160,6 +163,13 @@ def watchlist(request):
         "listings": listings,
     })
 
+def winnings(request):
+    listings = Listing.objects.filter(winner_id=request.user)
+
+    return render(request, "auctions/index.html",{
+        "listings": listings
+    })
+
 
 
 
@@ -171,7 +181,7 @@ def reset(request):
     listings = Listing.objects.all()
 
     for listing in listings:
-        listing.winner_id = 0
+        listing.winner_id = None
         listing.save()
             
     return HttpResponseRedirect(f"{reverse("auctions:index")}?type=anounce&message=closed listings are open again")
