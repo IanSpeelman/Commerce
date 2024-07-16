@@ -15,4 +15,8 @@ class Listing(models.Model):
     category = models.CharField(max_length=30,blank=True)
 
 
-#TODO create bidding model
+
+class Bid(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
+    bid = models.FloatField()

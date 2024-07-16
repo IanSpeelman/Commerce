@@ -14,7 +14,15 @@
 	</div>
 	<div class="bidding left">
 		{% if user.id and user.id != listing.user_id.id%}
-		<form action="{% url 'auctions:bid' listing.id %}"><label for="bid"></label><input type="number" name="bid" id="bid" value="{{listing.starting_bid}}"><button>bid!</button></form>
+		<form action="{% url 'auctions:bid' listing.id %}" method="post"><label for="bid"></label>
+			{% if highest_bid != False %}
+			<input type="number" name="bid" id="bid" min="{{ highest_bid }}" value="{{ highest_bid }}">
+			{% else %}
+			<input type="number" name="bid" id="bid" min="{{ listing.starting_bid }}"
+				value="{{ listing.starting_bid }}">
+			{% endif %}
+			<button>bid!</button>{% csrf_token %}
+		</form>
 		{% else %}
 		<p><span>highest bid: </span>${{ listing.starting_bid }}</p>
 		{% endif %}

@@ -35,6 +35,12 @@
 		{% endif %}
 	</ul>
 	<hr />
+	{% if message %}
+	<div class="message {{ type }}">
+		<p>{{ message }}</p>
+	</div>
+	{% endif %}
+
 	{% block body %} {% endblock %}
 </body>
 

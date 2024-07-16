@@ -44,7 +44,8 @@ optional category
 active listings
 list all active listings,
 each listing should display at least
-titledescription
+title
+description
 current price
 photo( if this is provided when creating a listing, this is optional)
 

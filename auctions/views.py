@@ -3,7 +3,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from .models import User, Listing
+from .models import User, Listing, Bid
 
 
 def index(request):
@@ -66,14 +66,41 @@ def register(request):
 
 def listing(request, listing_id):
     listing = Listing.objects.get(id=listing_id)
+    bids = Bid.objects.filter(listing=listing_id)
+    highest_bid = False
+    for bid in bids:
+        if bid.bid > highest_bid:
+            highest_bid = bid.bid
+            
     return render(request, "auctions/listing.html", {
         "listing": listing,
+        "highest_bid":highest_bid,
+        "type": request.GET.get("type", False),
+        "message": request.GET.get("message", False),
     })
 
+
 def close_listing(request, listing_id):
-    #TODO get highest bidder and set as winner_id for listing
+    # TODO get highest bidder and set as winner_id for listing
     return HttpResponseRedirect(reverse("auctions:index"))
 
+
 def bid(request,listing_id):
-    #TODO retrieve bid and listing id, and add to a bidding model
-    return HttpResponseRedirect(reverse("auctions:index"))
+    if request.method == "POST":
+        highest_bet = False
+        listing = Listing.objects.get(id=listing_id)
+        bids = Bid.objects.filter(listing=listing_id)
+        bidvalue = request.POST.get("bid")
+        for bid in bids:
+            if bid.bid > highest_bet:
+                highest_bet = bid.bid
+        print(bidvalue)
+        if float(bidvalue) > float(highest_bet):
+            highest_bet = bidvalue
+            newbid = Bid(user=request.user, listing=listing, bid=highest_bet)
+            newbid.save()
+            return HttpResponseRedirect(f"{reverse("auctions:listing", kwargs={"listing_id":listing_id})}?type=success&message=Bid placed successfully")
+        else:
+            return HttpResponseRedirect(f"{reverse("auctions:listing", kwargs={"listing_id":listing_id})}?type=fail&message=Bid is to low")
+
+        
