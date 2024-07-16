@@ -79,3 +79,31 @@ span {
 .anounce {
 	background-color: rgba(0, 94, 255, 0.3);
 }
+.content {
+	display: flex;
+	flex-direction: column;
+
+	.buttons {
+		width: 100%;
+		padding: 0;
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-end;
+
+		form {
+			margin: 0;
+			padding: 0;
+			width: fit-content;
+			button {
+				margin: 0;
+				padding: 0 0.7em;
+				background: none;
+				border: none;
+				color: var(--primary);
+			}
+			button:hover {
+				color: #1662cc;
+			}
+		}
+	}
+}

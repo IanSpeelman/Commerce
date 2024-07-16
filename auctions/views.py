@@ -4,7 +4,7 @@ from django.db.models import OuterRef, Subquery
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from .models import User, Listing, Bid
+from .models import User, Listing, Bid, Watchlist
 
 
 def index(request):
@@ -71,6 +71,9 @@ def register(request):
 def listing(request, listing_id):
     listing = Listing.objects.get(id=listing_id)
     bids = Bid.objects.filter(listing=listing_id)
+    user = request.user
+    watchlist = Watchlist.objects.filter(user=user, listing=listing)
+
     highest_bid = False
     for bid in bids:
         if bid.bid > highest_bid:
@@ -81,6 +84,7 @@ def listing(request, listing_id):
         "highest_bid":highest_bid,
         "type": request.GET.get("type", False),
         "message": request.GET.get("message", False),
+        "watchlist":watchlist,
     })
 
 
@@ -128,6 +132,32 @@ def bid(request,listing_id):
             return HttpResponseRedirect(f"{reverse("auctions:listing", kwargs={"listing_id":listing_id})}?type=fail&message=Bid is to low")
 
         
+def watchlist(request, listing_id):
+    if request.method == "POST":
+        listing = Listing.objects.get(id=listing_id)
+        user = request.user
+        watchlist = Watchlist.objects.filter(user=user, listing=listing)
+        print(len(watchlist))
+        try:
+            if(len(watchlist) == 1):
+                watchlist[0].delete()
+                return HttpResponseRedirect(f"{reverse("auctions:listing", kwargs={"listing_id":listing_id})}?type=success&message=listing is removed from your watchlist")
+            else:
+                newWatchlist = Watchlist(user=user, listing=listing)
+                newWatchlist.save()
+            return HttpResponseRedirect(f"{reverse("auctions:listing", kwargs={"listing_id":listing_id})}?type=success&message=listing is added to your watchlist")
+        except:
+            return HttpResponseRedirect(f"{reverse("auctions:listing", kwargs={"listing_id":listing_id})}?type=fail&message=something went wrong")
+
+
+
+
+
+
+
+
+
+
 def reset(request):
     listings = Listing.objects.all()
 
@@ -136,3 +166,4 @@ def reset(request):
         listing.save()
             
     return HttpResponseRedirect(f"{reverse("auctions:index")}?type=anounce&message=closed listings are open again")
+

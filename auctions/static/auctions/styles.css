@@ -80,4 +80,31 @@ span {
   background-color: rgba(0, 94, 255, 0.3);
 }
 
+.content {
+  display: flex;
+  flex-direction: column;
+}
+.content .buttons {
+  width: 100%;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+.content .buttons form {
+  margin: 0;
+  padding: 0;
+  width: fit-content;
+}
+.content .buttons form button {
+  margin: 0;
+  padding: 0 0.7em;
+  background: none;
+  border: none;
+  color: var(--primary);
+}
+.content .buttons form button:hover {
+  color: #1662cc;
+}
+
 /*# sourceMappingURL=styles.css.map */

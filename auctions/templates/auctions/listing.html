@@ -9,6 +9,19 @@
 		{% endif %}
 	</div>
 	<div class="content right">
+		<div class="buttons">
+			{% if watchlist %}
+			<form action="{% url 'auctions:watchlist' listing.id%}" method="post">{% csrf_token %}<button>remove from
+					watchlist</button></form>
+			{% else %}
+			<form action="{% url 'auctions:watchlist' listing.id%}" method="post">{% csrf_token %}<button>add to
+					watchlist</button></form>
+			{% endif %}
+			{% if user.id == listing.user_id.id %}
+			<form action="{% url 'auctions:close_listing' listing.id%}" method="post">{% csrf_token %}<button>close
+					auction</button></form>
+			{% endif %}
+		</div>
 		<h1>{{ listing.title }}</h1>
 		<p>{{ listing.description }}</p>
 	</div>
@@ -31,10 +44,6 @@
 		{% endif %}
 		{% endif %}
 		<p><span>category: </span>{{ listing.category }}</p>
-		{% if user.id == listing.user_id.id %}
-		<form action="{% url 'auctions:close_listing' listing.id%}" method="post">{% csrf_token %}<button>close
-				auction</button></form>
-		{% endif %}
 
 	</div>
 	<div class="comments right">
