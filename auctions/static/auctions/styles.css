@@ -27,7 +27,8 @@ span {
 
 .listings {
   width: 90vw;
-  margin: 0 auto;
+  margin: auto;
+  margin-top: 2em;
 }
 .listings ul {
   width: 100%;

@@ -132,7 +132,7 @@ def bid(request,listing_id):
             return HttpResponseRedirect(f"{reverse("auctions:listing", kwargs={"listing_id":listing_id})}?type=fail&message=Bid is to low")
 
         
-def watchlist(request, listing_id):
+def watchlistadd(request, listing_id):
     if request.method == "POST":
         listing = Listing.objects.get(id=listing_id)
         user = request.user
@@ -149,7 +149,16 @@ def watchlist(request, listing_id):
         except:
             return HttpResponseRedirect(f"{reverse("auctions:listing", kwargs={"listing_id":listing_id})}?type=fail&message=something went wrong")
 
-
+def watchlist(request):
+    user = request.user
+    watchlist_items = Watchlist.objects.filter(user=user)
+    listings = []
+    print(len(watchlist_items))
+    for item in watchlist_items:
+        listings.append(item.listing)
+    return render(request, "auctions/index.html", {
+        "listings": listings,
+    })
 
 
 
