@@ -15,8 +15,9 @@
             <label for="category">category:</label>
             <input list="categories" id="category" name="category" autocomplete="off" />
             <datalist id="categories">
-                <option value="lizzard"></option>
-                <option value="cat"></option>
+                {% for category in categories %}
+                <option value="{{category.category}}"></option>
+                {% endfor %}
             </datalist>
         </div>
         <button>Add Listing</button>

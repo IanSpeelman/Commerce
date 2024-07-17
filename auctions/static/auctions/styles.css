@@ -32,10 +32,8 @@ span {
 }
 .listings ul {
   width: 100%;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-around;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 25em);
   gap: 1em;
 }
 .listings ul div.item {

@@ -12,7 +12,7 @@ class Listing(models.Model):
     starting_bid = models.IntegerField()
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name="owner")
     winner_id = models.ForeignKey(User, blank=True,null=True, related_name="winner", on_delete=models.CASCADE)
-    image_url = models.CharField(max_length=100, blank=True)
+    image_url = models.CharField(max_length=255, blank=True)
     category = models.CharField(max_length=30,blank=True)
     current_bid = models.IntegerField(default=False)
 
@@ -25,3 +25,8 @@ class Bid(models.Model):
 class Watchlist(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
+
+class Comment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
+    comment = models.CharField(max_length=255)

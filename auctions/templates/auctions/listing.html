@@ -12,12 +12,15 @@
 		<div class="buttons">
 			{% if user.is_authenticated %}
 			{% if watchlist %}
-			<form action="{% url 'auctions:watchlist_add' listing.id%}" method="post">{% csrf_token %}<button>remove from watchlist</button></form>
+			<form action="{% url 'auctions:watchlist_add' listing.id%}" method="post">{% csrf_token %}<button>remove
+					from watchlist</button></form>
 			{% else %}
-			<form action="{% url 'auctions:watchlist_add' listing.id%}" method="post">{% csrf_token %}<button>add to watchlist</button></form>
+			<form action="{% url 'auctions:watchlist_add' listing.id%}" method="post">{% csrf_token %}<button>add to
+					watchlist</button></form>
 			{% endif %}
 			{% if user.id == listing.user_id.id %}
-			<form action="{% url 'auctions:close_listing' listing.id%}" method="post">{% csrf_token %}<button>close auction</button></form>
+			<form action="{% url 'auctions:close_listing' listing.id%}" method="post">{% csrf_token %}<button>close
+					auction</button></form>
 			{% endif %}
 			{% endif %}
 		</div>
@@ -52,11 +55,21 @@
 		{% endif %}
 		{% endif %}
 		{% endif %}
-		<p><span>category: </span>{{ listing.category }}</p>
+
+		<p><span>category: </span><a href="{% url 'auctions:category' %}?category={{ listing.category}}">{{ listing.category }}</a></p>
 
 	</div>
 	<div class="comments right">
-		<p><span>name:</span> comments should go here</p>
+		{% for comment in comments %}
+		<p><span>{{ comment.user }}: </span>{{ comment.comment }}</p>
+		{% endfor %}
+		{% if user.is_authenticated %}
+		<form action="{% url 'auctions:comment' listing.id %}" method="post">
+			{% csrf_token %}
+			<div><textarea name="comment" id="comment" placeholder="comment..." cols="50" rows="5"></textarea></div>
+			<button>Submit</button>
+		</form>
+		{% endif %}
 	</div>
 </div>
 
