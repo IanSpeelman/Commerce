@@ -108,4 +108,24 @@ span {
   color: #1662cc;
 }
 
+.center {
+  display: flex;
+  justify-content: center;
+}
+.center .create-form div {
+  display: grid;
+  grid-template-columns: 7em 25em;
+}
+.center .create-form div input, .center .create-form div textarea {
+  margin: 0.1em;
+  border-radius: 0.2em;
+  border: 1px solid rgb(98, 98, 98);
+}
+.center .create-form button {
+  padding: 1em;
+  margin: 0.1em;
+  border-radius: 0.2em;
+  border: 1px solid rgb(98, 98, 98);
+}
+
 /*# sourceMappingURL=styles.css.map */

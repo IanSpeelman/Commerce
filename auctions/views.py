@@ -72,6 +72,8 @@ def listing(request, listing_id):
     bids = Bid.objects.filter(listing=listing_id)
     watchlist = {}
     if request.user == "AnonymousUser":
+        print("do nothing")
+    else:
         print(request.user)
         user = request.user
         watchlist = Watchlist.objects.filter(user=user, listing=listing)
@@ -106,7 +108,7 @@ def close_listing(request, listing_id):
             listing.save()
             return HttpResponseRedirect(f"{reverse("auctions:listing", kwargs={"listing_id":listing_id})}?type=success&message=Closing listing success.")
         except:
-            listing.winner_id = None
+            listing.winner_id = request.user
             listing.save()
             return HttpResponseRedirect(f"{reverse("auctions:listing", kwargs={"listing_id":listing_id})}?type=anounce&message=Listing is closed without winner.")
 
@@ -164,13 +166,31 @@ def watchlist(request):
     })
 
 def winnings(request):
-    listings = Listing.objects.filter(winner_id=request.user)
+    listings = Listing.objects.filter(winner_id=request.user).exclude(user_id=request.user)
 
     return render(request, "auctions/index.html",{
         "listings": listings
     })
 
 
+def create_listing(request):
+    if request.method == "POST":
+        user = request.user
+        title = request.POST.get("title")
+        description = request.POST.get("description")
+        starting_bid = request.POST.get("starting_bid")
+        image_url = request.POST.get("image_url")
+        category = request.POST.get("category")
+        try:
+            if image_url == "":
+                image_url = False
+            NewListing = Listing(title=title, description=description, starting_bid=starting_bid, image_url=image_url, category=category, user_id=user)
+            NewListing.save()
+            return HttpResponseRedirect(f"{reverse("auctions:index")}?type=success&message=New listing added successfully")
+        except:
+            return HttpResponseRedirect(f"{reverse("auctions:index")}?type=fail&message=oops something went wrong")
+
+    return render(request, "auctions/create_listing.html")
 
 
 

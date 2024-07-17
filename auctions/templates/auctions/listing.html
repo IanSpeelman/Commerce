@@ -12,16 +12,12 @@
 		<div class="buttons">
 			{% if user.is_authenticated %}
 			{% if watchlist %}
-			<form action="{% url 'auctions:watchlist_add' listing.id%}" method="post">{% csrf_token %}<button>remove
-					from
-					watchlist</button></form>
+			<form action="{% url 'auctions:watchlist_add' listing.id%}" method="post">{% csrf_token %}<button>remove from watchlist</button></form>
 			{% else %}
-			<form action="{% url 'auctions:watchlist_add' listing.id%}" method="post">{% csrf_token %}<button>add to
-					watchlist</button></form>
+			<form action="{% url 'auctions:watchlist_add' listing.id%}" method="post">{% csrf_token %}<button>add to watchlist</button></form>
 			{% endif %}
 			{% if user.id == listing.user_id.id %}
-			<form action="{% url 'auctions:close_listing' listing.id%}" method="post">{% csrf_token %}<button>close
-					auction</button></form>
+			<form action="{% url 'auctions:close_listing' listing.id%}" method="post">{% csrf_token %}<button>close auction</button></form>
 			{% endif %}
 			{% endif %}
 		</div>
